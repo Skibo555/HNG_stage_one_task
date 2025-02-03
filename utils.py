@@ -4,13 +4,13 @@ import requests
 NUMBER_URL_BASE = "http://numbersapi.com/"
 
 
-async def check_number(number: int):
-    response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
+def check_number(number: int):
+    response = requests.get(f"{NUMBER_URL_BASE}{abs(number)}/math")
     if response.status_code == 200:
         return response.text
 
 
-async def is_prime(num: int):
+def is_prime(num: int):
     # Negative numbers, 0 and 1 are not primes
     if num > 1:
 
@@ -27,13 +27,13 @@ async def is_prime(num: int):
         return False
 
 
-async def even(number: int):
+def even(number: int):
     if number != 1 and number % 2 == 0:
         return True
     return False
 
 
-async def is_perfect_number(number: int):
+def is_perfect_number(number: int):
     divisors = sum([i for i in range(1, number) if number % i == 0])
     if number == divisors:
         return True
@@ -82,16 +82,23 @@ def is_armstrong(x):
 
 
 # Function to get sum of digits
-async def digit_sum(n: int):
+def digit_sum(n: int):
     summation = 0
     for digit in str(n):
         summation += int(digit)
     return summation
 
 
-async def check_input_type(n: str):
-    if n.isalnum():
-        return "alphabet"
-    if n.isalpha():
-        return "alpha-numeric"
+def get_positive_integer(user_input):
+    if user_input:
+        try:
+            # Convert input to an integer
+            number = int(user_input)
+
+            # Ensure it's positive
+            return abs(number)
+
+        except ValueError:
+            return None
+
 
