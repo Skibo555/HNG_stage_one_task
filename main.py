@@ -33,7 +33,17 @@ app.add_middleware(
 async def get_number(request: Request, res: Response):
     parameter = request.query_params
     user_input = parameter.get("number")
+    print(user_input)
     armstrong = []
+    if not user_input:
+        response = {
+            "number": user_input,
+            "error": True
+        }
+        res.status_code = status.HTTP_400_BAD_REQUEST
+
+        return response
+
     if get_positive_integer(int(user_input)):
         try:
             user_in = abs(int(user_input))
