@@ -5,7 +5,7 @@ NUMBER_URL_BASE = "http://numbersapi.com/"
 
 
 def check_number(number: int):
-    response = requests.get(f"{NUMBER_URL_BASE}{abs(number)}/math")
+    response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
     if response.status_code == 200:
         return response.text
 
@@ -100,5 +100,8 @@ def get_positive_integer(user_input):
 
         except ValueError:
             return None
+    else:
+        return None
+
 
 

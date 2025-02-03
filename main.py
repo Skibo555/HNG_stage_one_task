@@ -34,18 +34,18 @@ async def get_number(request: Request, res: Response):
     parameter = request.query_params
     user_input = parameter.get("number")
     armstrong = []
-    if get_positive_integer(user_input):
+    if get_positive_integer(int(user_input)):
         try:
-            user_input = abs(int(user_input))
-            result = check_number(int(user_input))
+            user_in = abs(int(user_input))
+            result = check_number(int(user_in))
             ev_od = even(int(user_input))
-            is_perfect = is_perfect_number(int(user_input))
-            prime = is_prime(int(user_input))
-            dig_sum = digit_sum(int(user_input))
-            if is_armstrong(int(user_input)) and ev_od:
+            is_perfect = is_perfect_number(int(user_in))
+            prime = is_prime(int(user_in))
+            dig_sum = digit_sum(int(user_in))
+            if is_armstrong(int(user_in)) and ev_od:
                 armstrong.append("armstrong")
                 armstrong.append("even")
-            elif is_armstrong(int(user_input)) and not ev_od:
+            elif is_armstrong(int(user_in)) and not ev_od:
                 armstrong.append("armstrong")
                 armstrong.append("odd")
             else:
@@ -54,19 +54,18 @@ async def get_number(request: Request, res: Response):
                 if not ev_od:
                     armstrong.append("odd")
 
-                success = {
-                    "number": user_input,
-                    "is_prime": prime,
-                    "is_perfect": is_perfect,
-                    "properties": armstrong,
-                    "digit_sum": dig_sum,
-                    "fun_fact": result
-                }
+            success = {
+                "number": user_input,
+                "is_prime": prime,
+                "is_perfect": is_perfect,
+                "properties": armstrong,
+                "digit_sum": dig_sum,
+                "fun_fact": result
+            }
 
-                return success
+            return success
         except Exception as ex:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(ex))
-
     response = {
         "number": user_input,
         "error": True
