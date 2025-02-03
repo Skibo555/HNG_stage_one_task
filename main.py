@@ -68,7 +68,7 @@ async def get_number(request: Request, res: Response):
     invalid_input = await check_input_type(user_input)
 
     response = {
-        "number": invalid_input,
+        "number": user_input,
         "error": True
     }
     res.status_code = status.HTTP_400_BAD_REQUEST

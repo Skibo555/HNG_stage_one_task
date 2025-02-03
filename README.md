@@ -1,4 +1,4 @@
-Welcome my Stage 0 task for HNG
+Welcome my Stage 1 task for HNG
 This project when given a valid integer, it returns if the number is prime number, perfect number, returns a fun fact about the number and also checks if the number is an even or odd number and also if the number is armstrong or not, below is an example of a successful response:
 with a status code 200 Ok.
 ```commandline
@@ -47,7 +47,7 @@ run the app with:
 `python3 main.py`
 
 You can visit the live project here:
-https://hng-c12-stage-0.onrender.com/
+https://hng-stage-one-task-m9j7.onrender.com/
 
 
 
