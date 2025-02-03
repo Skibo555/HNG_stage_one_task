@@ -34,6 +34,15 @@ async def get_number(request: Request, res: Response):
     user_input = parameter.get("number")
     armstrong = []
     try:
+        if not user_input:
+            response = {
+                "number": user_input,
+                "error": True
+            }
+            res.status_code = status.HTTP_400_BAD_REQUEST
+
+            return response
+
         if user_input.isnumeric():
             result = await check_number(int(user_input))
             ev_od = await even(int(user_input))
