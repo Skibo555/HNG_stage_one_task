@@ -33,7 +33,6 @@ app.add_middleware(
 async def get_number(request: Request, res: Response):
     parameter = request.query_params
     user_input = parameter.get("number")
-    print(user_input)
     armstrong = []
     if not user_input:
         response = {
@@ -65,7 +64,7 @@ async def get_number(request: Request, res: Response):
                     armstrong.append("odd")
 
             success = {
-                "number": user_input,
+                "number": int(user_input),
                 "is_prime": prime,
                 "is_perfect": is_perfect,
                 "properties": armstrong,
