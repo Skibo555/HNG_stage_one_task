@@ -28,6 +28,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get('/')
+def get_home():
+    return {"message": "Welcome"}
+
 
 @app.get("/api/classify-number", status_code=status.HTTP_200_OK)
 async def get_number(request: Request, res: Response):
