@@ -1,3 +1,4 @@
+import sys
 import uvicorn
 from fastapi import FastAPI, Request, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,6 +12,8 @@ from utils import(
     digit_sum,
     get_positive_integer
 )
+
+sys.path.append('.')
 
 app = FastAPI(tag=["Number API"])
 
@@ -89,4 +92,6 @@ async def get_number(request: Request, res: Response):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", reload=True, host="0.0.0.0")
+    # uvicorn.run(app="main:app", reload=True, host="0.0.0.0")
+    uvicorn.run(app)
+
