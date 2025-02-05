@@ -1,4 +1,3 @@
-import sys
 import uvicorn
 from fastapi import FastAPI, Request, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +12,6 @@ from utils import(
     get_positive_integer
 )
 
-sys.path.append('.')
 
 app = FastAPI(tag=["Number API"])
 
