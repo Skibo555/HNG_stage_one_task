@@ -104,4 +104,12 @@ def get_positive_integer(user_input):
         return None
 
 
+def check_int(user_input):
+    if isinstance(user_input, int):
+        return True
 
+
+
+
+chec = check_int(4)
+print(chec)
