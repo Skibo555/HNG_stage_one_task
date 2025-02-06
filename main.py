@@ -51,15 +51,15 @@ async def get_number(request: Request, res: Response):
     if get_positive_integer(int(user_input)):
         try:
             user_in = abs(int(user_input))
-            result = check_number(user_in)
-            ev_od = even(user_input)
-            is_perfect = is_perfect_number(user_in)
-            prime = is_prime(user_in)
-            dig_sum = digit_sum(user_in)
-            if is_armstrong(user_in) and ev_od:
+            result = check_number(int(user_in))
+            ev_od = even(int(user_in))
+            is_perfect = is_perfect_number(int(user_in))
+            prime = is_prime(int(user_in))
+            dig_sum = digit_sum(int(user_in))
+            if is_armstrong(int(user_in)) and ev_od:
                 armstrong.append("armstrong")
                 armstrong.append("even")
-            elif is_armstrong(user_in) and not ev_od:
+            elif is_armstrong(int(user_in)) and not ev_od:
                 armstrong.append("armstrong")
                 armstrong.append("odd")
             else:
