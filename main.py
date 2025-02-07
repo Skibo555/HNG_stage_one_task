@@ -86,8 +86,16 @@ async def get_number(request: Request, res: Response):
     user_input = parameter.get("number")
     armstrong = []
 
+    if not user_input:
+        response = {
+            "number": "",
+            "error": True
+        }
+        res.status_code = status.HTTP_400_BAD_REQUEST
+        return response
+
     # Input validation
-    if not user_input or not check_int(user_input):
+    if not check_int(user_input):
         response = {
             "number": user_input,
             "error": True

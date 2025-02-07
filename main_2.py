@@ -86,7 +86,6 @@ async def get_number(request: Request, res: Response):
         return {
             "number": user_input,
             "error": True,
-            "message": "Invalid input. Please provide a valid integer."
         }
 
     # Ensure the input is a positive integer
@@ -96,7 +95,6 @@ async def get_number(request: Request, res: Response):
         return {
             "number": user_input,
             "error": True,
-            "message": "Invalid input. Could not parse a positive integer."
         }
 
     # Process the valid input
