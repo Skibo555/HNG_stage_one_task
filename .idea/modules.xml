@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Mart_plaza/.idea/Mart_plaza.iml" filepath="$PROJECT_DIR$/../Mart_plaza/.idea/Mart_plaza.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/stage_1_task.iml" filepath="$PROJECT_DIR$/.idea/stage_1_task.iml" />
     </modules>
   </component>

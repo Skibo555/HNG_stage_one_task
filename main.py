@@ -53,6 +53,8 @@ def check_number(number: int):
     response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
     if response.status_code == 200:
         return response.text
+
+
 def even(value):
     return value % 2 == 0
 
@@ -108,7 +110,7 @@ async def get_number(request: Request, res: Response):
         result = check_number(int(user_in))
         ev_od = even(int(user_in))
         is_perfect = is_perfect_number(int(user_in))
-        prime = is_prime(int(user_in))
+        prime = is_prime(int(user_input))
         dig_sum = digit_sum(int(user_in))
 
         if is_armstrong(int(user_in)) and ev_od:
