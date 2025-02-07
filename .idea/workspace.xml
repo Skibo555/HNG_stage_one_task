@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b3c4e8b-a98f-4bf1-99be-d71ebbfd310a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/app/resources/cart_resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/app/resources/cart_resource.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/app/resources/order_resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/app/resources/order_resource.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/utils/auth2.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mart_plaza/Backend/api/v1/utils/auth2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Mart_plaza/Backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mart_plaza/Backend/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

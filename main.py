@@ -86,7 +86,7 @@ async def get_number(request: Request, res: Response):
     user_input = parameter.get("number")
     armstrong = []
 
-    if not user_input:
+    if not user_input or int(user_input) > 0:
         response = {
             "number": "",
             "error": True
