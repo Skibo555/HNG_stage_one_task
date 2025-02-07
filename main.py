@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Request, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
+import requests
 
 
 app = FastAPI(tag=["Number API"])
@@ -45,9 +46,13 @@ def get_positive_integer(user_input):
     else:
         return None
 
-def check_number(value):
-    return "This is a fun fact about the number."
+NUMBER_URL_BASE = "http://numbersapi.com/"
 
+
+def check_number(number: int):
+    response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
+    if response.status_code == 200:
+        return response.text
 def even(value):
     return value % 2 == 0
 
@@ -134,4 +139,3 @@ async def get_number(request: Request, res: Response):
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", reload=True, host="0.0.0.0")
-

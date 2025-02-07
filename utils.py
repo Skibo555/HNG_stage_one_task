@@ -4,6 +4,7 @@ import requests
 NUMBER_URL_BASE = "http://numbersapi.com/"
 
 
+
 def check_number(number: int):
     response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
     if response.status_code == 200:
@@ -111,5 +112,5 @@ def check_int(user_input):
 
 
 
-chec = check_int(4)
+chec = check_number(4)
 print(chec)
