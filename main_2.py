@@ -3,9 +3,24 @@ import requests
 import math
 from typing import List, Union, Optional
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Number Analysis API",
               description="API that provides mathematical properties and fun facts about numbers")
+
+# Define allowed origins
+origins = [
+    "*",  # Allows all domains
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 
 # Separate models for success and error responses
