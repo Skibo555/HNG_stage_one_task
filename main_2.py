@@ -29,24 +29,25 @@ def is_armstrong(num: int) -> bool:
     if not isinstance(num, int):
         return False
 
-    num_str = str(num)
+    num_str = str(abs(num))
     power = len(num_str)
     sum_of_powers = sum(int(digit) ** power for digit in num_str)
-    return sum_of_powers == num
+    return sum_of_powers == abs(num)
 
 
 def is_prime(num: int) -> bool:
     """Check if a number is prime."""
-    if num < 2:
+    if abs(num) < 2:
         return False
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
+    for i in range(2, int(math.sqrt(abs(num))) + 1):
+        if abs(num) % i == 0:
             return False
     return True
 
 
 def is_perfect(num: int) -> bool:
     """Check if a number is perfect (sum of proper divisors equals the number)."""
+    num = abs(num)
     if num <= 1:
         return False
 
@@ -61,7 +62,7 @@ def is_perfect(num: int) -> bool:
 
 def get_digit_sum(num: int) -> int:
     """Calculate the sum of digits in a number."""
-    return sum(int(digit) for digit in str(num))
+    return sum(int(digit) for digit in str(abs(num)))
 
 
 def get_properties(num: int) -> List[str]:
@@ -89,7 +90,7 @@ async def analyze_number(number: str = Query(..., description="The number to ana
     - Returns mathematical properties like prime, perfect, Armstrong
     - Includes sum of digits
     - Fetches a fun fact from the Numbers API
-    - Handles both valid numbers and invalid inputs
+    - Handles both valid numbers (including negative) and invalid inputs
     """
     try:
         num = int(number)
@@ -97,9 +98,9 @@ async def analyze_number(number: str = Query(..., description="The number to ana
         # Get fun fact from Numbers API
         try:
             fun_fact_response = requests.get(f'http://numbersapi.com/{num}/math')
-            fun_fact = fun_fact_response.text if fun_fact_response.status_code == 200 else None
+            fun_fact = fun_fact_response.text if fun_fact_response.status_code == 200 else f"{num} is a boring number."
         except requests.RequestException:
-            fun_fact = f"{num} is an interesting number with various mathematical properties."
+            fun_fact = f"{num} is a boring number."
 
         return SuccessResponse(
             number=num,
