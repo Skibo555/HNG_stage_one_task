@@ -1,130 +1,121 @@
-import uvicorn
-from fastapi import FastAPI, Request, HTTPException, status, Response
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Query
 import requests
+import math
+from typing import List, Union, Optional
+from pydantic import BaseModel
 
-app = FastAPI(tags=["Number API"])
+app = FastAPI(title="Number Analysis API",
+              description="API that provides mathematical properties and fun facts about numbers")
 
-# Define allowed origins
-origins = [
-    "*",  # Allows all domains
-]
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=False,
-    allow_methods=["GET"],
-    allow_headers=["*"],
-)
+# Separate models for success and error responses
+class SuccessResponse(BaseModel):
+    number: int
+    is_prime: bool
+    is_perfect: bool
+    properties: List[str]
+    digit_sum: int
+    fun_fact: str
+    error: bool = False
 
-@app.get('/')
-def get_home():
-    return {"message": "Welcome to the Number API!"}
 
-def check_int(value):
-    try:
-        int(value)
-        return True
-    except ValueError:
+class ErrorResponse(BaseModel):
+    number: str
+    error: bool = True
+
+
+def is_armstrong(num: int) -> bool:
+    """Check if a number is an Armstrong number."""
+    if not isinstance(num, int):
         return False
 
-def get_positive_integer(user_input):
-    try:
-        # Convert input to an integer
-        number = int(user_input)
+    num_str = str(num)
+    power = len(num_str)
+    sum_of_powers = sum(int(digit) ** power for digit in num_str)
+    return sum_of_powers == num
 
-        # Ensure it's positive
-        return abs(number)
 
-    except ValueError:
-        return None
-
-NUMBER_URL_BASE = "http://numbersapi.com/"
-
-def check_number(number: int):
-    try:
-        response = requests.get(f"{NUMBER_URL_BASE}{number}/math")
-        if response.status_code == 200:
-            return response.text
-        return "No fun fact available."
-    except requests.RequestException:
-        return "Failed to fetch fun fact."
-
-def even(value):
-    return value % 2 == 0
-
-def is_perfect_number(value):
-    return sum(i for i in range(1, value) if value % i == 0) == value
-
-def is_prime(value):
-    if value < 2:
+def is_prime(num: int) -> bool:
+    """Check if a number is prime."""
+    if num < 2:
         return False
-    for i in range(2, int(value**0.5) + 1):
-        if value % i == 0:
+    for i in range(2, int(math.sqrt(num)) + 1):
+        if num % i == 0:
             return False
     return True
 
-def digit_sum(value):
-    return sum(int(digit) for digit in str(value))
 
-def is_armstrong(value):
-    digits = [int(d) for d in str(value)]
-    num_digits = len(digits)
-    return sum(d ** num_digits for d in digits) == value
+def is_perfect(num: int) -> bool:
+    """Check if a number is perfect (sum of proper divisors equals the number)."""
+    if num <= 1:
+        return False
 
-@app.get("/api/classify-number", status_code=status.HTTP_200_OK)
-async def get_number(request: Request, res: Response):
-    parameter = request.query_params
-    user_input = parameter.get("number")
+    divisors_sum = 1
+    for i in range(2, int(math.sqrt(num)) + 1):
+        if num % i == 0:
+            divisors_sum += i
+            if i != num // i:  # Add the other divisor if it's different
+                divisors_sum += num // i
+    return divisors_sum == num
+
+
+def get_digit_sum(num: int) -> int:
+    """Calculate the sum of digits in a number."""
+    return sum(int(digit) for digit in str(num))
+
+
+def get_properties(num: int) -> List[str]:
+    """Get list of properties (armstrong, odd/even) for a number."""
     properties = []
 
-    # Input validation
-    if not user_input or not check_int(user_input):
-        res.status_code = status.HTTP_400_BAD_REQUEST
-        return {
-            "number": user_input,
-            "error": True,
-        }
+    # Check Armstrong
+    if is_armstrong(num):
+        properties.append("armstrong")
 
-    # Ensure the input is a positive integer
-    user_in = get_positive_integer(user_input)
-    if user_in is None:
-        res.status_code = status.HTTP_400_BAD_REQUEST
-        return {
-            "number": user_input,
-            "error": True,
-        }
+    # Check odd/even
+    if num % 2 == 0:
+        properties.append("even")
+    else:
+        properties.append("odd")
 
-    # Process the valid input
+    return properties
+
+
+@app.get("/api/classify-number", response_model=Union[SuccessResponse, ErrorResponse])
+async def analyze_number(number: str = Query(..., description="The number to analyze")):
+    """
+    Analyze a number and return its mathematical properties.
+
+    - Returns mathematical properties like prime, perfect, Armstrong
+    - Includes sum of digits
+    - Fetches a fun fact from the Numbers API
+    - Handles both valid numbers and invalid inputs
+    """
     try:
-        result = check_number(user_in)
-        is_even = even(user_in)
-        is_perfect = is_perfect_number(user_in)
-        is_prime_result = is_prime(user_in)
-        digit_sum_result = digit_sum(user_in)
-        is_armstrong_result = is_armstrong(user_in)
+        num = int(number)
 
-        if is_armstrong_result:
-            properties.append("armstrong")
-        if is_even:
-            properties.append("even")
-        else:
-            properties.append("odd")
+        # Get fun fact from Numbers API
+        try:
+            fun_fact_response = requests.get(f'http://numbersapi.com/{num}/math')
+            fun_fact = fun_fact_response.text if fun_fact_response.status_code == 200 else None
+        except requests.RequestException:
+            fun_fact = f"{num} is an interesting number with various mathematical properties."
 
-        success = {
-            "number": user_in,
-            "is_prime": is_prime_result,
-            "is_perfect": is_perfect,
-            "properties": properties,
-            "digit_sum": digit_sum_result,
-            "fun_fact": result
-        }
+        return SuccessResponse(
+            number=num,
+            is_prime=is_prime(num),
+            is_perfect=is_perfect(num),
+            properties=get_properties(num),
+            digit_sum=get_digit_sum(num),
+            fun_fact=fun_fact
+        )
 
-        return success
-    except Exception as ex:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(ex))
+    except ValueError:
+        # Return only number and error flag for invalid inputs
+        return ErrorResponse(number=number)
+
 
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", reload=True, host="0.0.0.0", port=8000)
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

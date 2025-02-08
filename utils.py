@@ -91,7 +91,7 @@ def digit_sum(n: int):
 
 
 def get_positive_integer(user_input):
-    if user_input:
+    if user_input is not None:
         try:
             # Convert input to an integer
             number = int(user_input)
@@ -112,5 +112,5 @@ def check_int(user_input):
 
 
 
-chec = check_number(4)
+chec = get_positive_integer(0)
 print(chec)
